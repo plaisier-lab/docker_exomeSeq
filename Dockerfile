@@ -44,4 +44,13 @@ RUN rm chr*.fa
 bwa index -p hg38bwaidx -a bwtsw wg.fa
 
 # Install Python package dependencies
-RUN pip install biopython reportlab matplotlib numpy scipy pandas pyfaidx pysam cnvkit
+RUN pip install biopython reportlab matplotlib numpy scipy pandas pyfaidx pysam pyvcf cnvkit
+
+# Install R dependencies
+RUN R -e "install.packages(c('BiocManager'), repos = 'http://cran.us.r-project.org')"
+# Bioconductor packages (impute, topGO)
+RUN R -e "BiocManager::install(c('DNAcopy',''))"
+
+# Install fused lasso
+RUN wget https://cran.r-project.org/src/contrib/Archive/cghFLasso/cghFLasso_0.2-1.tar.gz
+RUN R CMD INSTALL cghFLasso_0.2-1.tar.gz
